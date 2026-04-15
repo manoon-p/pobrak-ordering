@@ -6,8 +6,8 @@ type CartItem = { id: string; name: string; price: number; quantity: number }
 
 import { useState, use } from 'react'
 
-export default function TableMenuPage({ params }: { params: any }) {
-  const resolvedParams = use(params)
+export default function TableMenuPage({ params }: { params: { tableId: string } }) {
+  const resolvedParams = use(params) as { tableId: string }
   const tableId = String(resolvedParams?.tableId ?? '')
   const [activeCategory, setActiveCategory] = useState(categories[0])
   const [cart, setCart] = useState<CartItem[]>([])
