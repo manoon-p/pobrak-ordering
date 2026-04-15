@@ -4,7 +4,7 @@ import { collection, query, where, onSnapshot } from 'firebase/firestore'
 import { db } from '@/lib/firebase'
 
 export function usePayments() {
-  const [payments, setPayments] = useState([])
+  const [payments, setPayments] = useState<any[]>([])
   useEffect(() => {
     const q = query(collection(db,'payments'), where('status','in',['requesting','reviewing','confirmed','method_selected','staff_collect','pending_verify']))
     return onSnapshot(q, snap => setPayments(snap.docs.map(d=>({id:d.id,...d.data()}))))
@@ -12,8 +12,8 @@ export function usePayments() {
   return { payments }
 }
 
-export function useTablePayment(tableId) {
-  const [payment, setPayment] = useState(null)
+export function useTablePayment(tableId: string) {
+  const [payment, setPayment] = useState<any>(null)
   useEffect(() => {
     if (!tableId) return
     const q = query(collection(db,'payments'), where('tableId','==',tableId), where('status','in',['requesting','reviewing','confirmed','method_selected','staff_collect','pending_verify']))
