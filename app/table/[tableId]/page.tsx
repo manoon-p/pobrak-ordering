@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { menuItems, categories } from '@/data/menuData'
-import { addOrder } from '@/lib/firestore/orders'
+import { createOrder } from '@/lib/firestore/orders'
 
 type CartItem = {
   id: string
