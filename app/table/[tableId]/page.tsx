@@ -43,12 +43,16 @@ export default function TableMenuPage({ params }: { params: { tableId: string } 
     if (cart.length === 0) return
     setLoading(true)
     try {
-      await createOrder({
-        tableId,
-        items: cart,
-        totalAmount: totalPrice,
-        status: 'pending',
-      })
+await createOrder({
+  tableId,
+  items: cart.map(item => ({
+    id: item.id,
+    name: item.name,
+    price: item.price,
+    quantity: item.quantity,
+  })),
+  totalAmount: totalPrice,
+})
       setOrdered(true)
       setCart([])
       setShowCart(false)
