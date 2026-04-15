@@ -5,8 +5,11 @@ import { createOrder } from '@/lib/firestore/orders'
 
 type CartItem = { id: string; name: string; price: number; quantity: number }
 
+import { useState, use } from 'react'
+
 export default function TableMenuPage({ params }: { params: any }) {
-  const tableId = String(params?.tableId ?? '')
+  const resolvedParams = use(params)
+  const tableId = String(resolvedParams?.tableId ?? '')
   const [activeCategory, setActiveCategory] = useState(categories[0])
   const [cart, setCart] = useState<CartItem[]>([])
   const [showCart, setShowCart] = useState(false)
