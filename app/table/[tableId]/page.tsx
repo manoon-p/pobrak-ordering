@@ -9,15 +9,16 @@ type CartItem = { id: string; name: string; price: number; quantity: number }
 export default function TableMenuPage() {
   const params = useParams()
   const tableId = String(params.tableId ?? '')
+  const searchParams = useSearchParams()
+  const adults = searchParams.get('adults') ?? '0'
+  const children = searchParams.get('children') ?? '0'
   const [activeCategory, setActiveCategory] = useState(categories[0])
   const [cart, setCart] = useState<CartItem[]>([])
   const [showCart, setShowCart] = useState(false)
   const [ordered, setOrdered] = useState(false)
   const [loading, setLoading] = useState(false)
   const filteredItems = menuItems.filter(item => item.category === activeCategory)
-  const searchParams = useSearchParams()
-  const adults = searchParams.get('adults') ?? '0'
-  const children = searchParams.get('children') ?? '0'
+
   function addToCart(item: { id: string; name: string; price: number }) {
     setCart(prev => {
       const existing = prev.find(c => c.id === item.id)
@@ -83,8 +84,13 @@ export default function TableMenuPage() {
             <div key={item.id} style={{background:'white',borderRadius:12,padding:16,marginBottom:10,display:'flex',justifyContent:'space-between',alignItems:'center',boxShadow:'0 1px 3px rgba(0,0,0,0.08)'}}>
               <div><div style={{fontWeight:500,color:'#111827'}}>{item.name}</div><div style={{color:'#15803d',fontWeight:'bold'}}>฿{item.price}</div></div>
               <div style={{display:'flex',alignItems:'center',gap:10}}>
-                {cartItem && <><button onClick={()=>removeFromCart(item.id)} style={{width:32,height:32,borderRadius:'50%',border:'2px solid #15803d',background:'white',color:'#15803d',fontSize:18,cursor:'pointer'}}>−</button><div style={{fontWeight:'bold',minWidth:20,textAlign:'center',color:'#111827',fontSize:16}}>{cartItem.quantity}</div>
-                <button onClick={()=>addToCart(item)} style={{width:32,height:32,borderRadius:'50%',border:'none',background:'#15803d',color:'white',fontSize:18,cursor:'pointer'}}>+</button>
+                {cartItem && (
+                  <>
+                    <button onClick={()=>removeFromCart(item.id)} style={{width:32,height:32,borderRadius:'50%',border:'2px solid #15803d',background:'white',color:'#15803d',fontSize:18,cursor:'pointer',lineHeight:1}}>−</button>
+                    <span style={{fontWeight:'bold',minWidth:20,textAlign:'center',color:'#111827',fontSize:16}}>{cartItem.quantity}</span>
+                  </>
+                )}
+                <button onClick={()=>addToCart(item)} style={{width:32,height:32,borderRadius:'50%',border:'none',background:'#15803d',color:'white',fontSize:18,cursor:'pointer',lineHeight:1}}>+</button>
               </div>
             </div>
           )
@@ -93,8 +99,8 @@ export default function TableMenuPage() {
       {showCart && (
         <div style={{position:'fixed',bottom:0,left:0,right:0,background:'white',borderRadius:'20px 20px 0 0',padding:20,boxShadow:'0 -4px 20px rgba(0,0,0,0.15)',zIndex:50,maxHeight:'70vh',overflowY:'auto'}}>
           <h3 style={{margin:'0 0 16px'}}>🛒 รายการที่เลือก</h3>
-          {cart.map(item => <div key={item.id} style={{display:'flex',justifyContent:'space-between',padding:'10px 0',borderBottom:'1px solid #f3f4f6'}}><span>{item.name} x{item.quantity}</span><span style={{fontWeight:'bold',color:'#15803d'}}>฿{item.price*item.quantity}</span></div>)}
-          <div style={{display:'flex',justifyContent:'space-between',padding:'16px 0',fontWeight:'bold',fontSize:18}}><span>รวมทั้งหมด</span><span style={{color:'#15803d'}}>฿{totalPrice}</span></div>
+          {cart.map(item => <div key={item.id} style={{display:'flex',justifyContent:'space-between',padding:'10px 0',borderBottom:'1px solid #f3f4f6'}}><span style={{color:'#111827'}}>{item.name} x{item.quantity}</span><span style={{fontWeight:'bold',color:'#15803d'}}>฿{item.price*item.quantity}</span></div>)}
+          <div style={{display:'flex',justifyContent:'space-between',padding:'16px 0',fontWeight:'bold',fontSize:18}}><span style={{color:'#111827'}}>รวมทั้งหมด</span><span style={{color:'#15803d'}}>฿{totalPrice}</span></div>
           <button onClick={submitOrder} disabled={loading} style={{width:'100%',padding:16,background:loading?'#9ca3af':'#15803d',color:'white',border:'none',borderRadius:12,fontSize:16,fontWeight:'bold',cursor:loading?'not-allowed':'pointer'}}>{loading?'กำลังส่ง...':'✅ ส่งออเดอร์'}</button>
         </div>
       )}
