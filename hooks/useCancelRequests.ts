@@ -4,7 +4,7 @@ import { collection, query, where, onSnapshot } from 'firebase/firestore'
 import { db } from '@/lib/firebase'
 
 export function useCancelRequests() {
-  const [requests, setRequests] = useState([])
+  const [requests, setRequests] = useState<any[]>([])
   useEffect(() => {
     const q = query(collection(db,'cancel_requests'), where('status','==','pending'))
     return onSnapshot(q, snap => setRequests(snap.docs.map(d=>({id:d.id,...d.data()}))))
@@ -12,8 +12,8 @@ export function useCancelRequests() {
   return { requests }
 }
 
-export function useTableCancelRequest(tableId) {
-  const [request, setRequest] = useState(null)
+export function useTableCancelRequest(tableId: string) {
+  const [request, setRequest] = useState<any>(null)
   useEffect(() => {
     if (!tableId) return
     const q = query(collection(db,'cancel_requests'), where('tableId','==',tableId), where('status','in',['pending','approved','rejected']))
