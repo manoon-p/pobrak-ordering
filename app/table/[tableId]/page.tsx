@@ -1,5 +1,4 @@
 'use client'
-import { useState } from 'react'
 import { menuItems, categories } from '@/data/menuData'
 import { createOrder } from '@/lib/firestore/orders'
 
