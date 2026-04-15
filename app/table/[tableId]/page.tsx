@@ -39,7 +39,7 @@ export default function TablePage() {
             <button onClick={()=>setChildren(v=>v+1)} style={{width:34,height:34,borderRadius:'50%',border:'none',background:'#2d6a4f',color:'white',fontSize:20,cursor:'pointer'}}>+</button>
           </div>
         </div>
-        <button onClick={()=>selected&&router.push(`/table/${selected}`)} disabled={!selected} style={{width:'100%',padding:'17px',background:selected?'#2d6a4f':'#e0e0e0',color:selected?'white':'#aaa',border:'none',borderRadius:16,fontWeight:800,fontSize:17,cursor:selected?'pointer':'not-allowed'}}>
+       <button onClick={()=>{ if(selected) router.push(`/table/${selected}`) }} disabled={!selected} style={{width:'100%',padding:'17px',background:selected?'#2d6a4f':'#e0e0e0',color:selected?'white':'#aaa',border:'none',borderRadius:16,fontWeight:800,fontSize:17,cursor:selected?'pointer':'not-allowed'}}>
           {selected?`เข้าสู่เมนู โต๊ะ ${selected}`:'กรุณาเลือกโต๊ะก่อน'}
         </button>
       </div>
