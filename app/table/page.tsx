@@ -7,6 +7,13 @@ export default function TablePage() {
   const [adults, setAdults] = useState(2)
   const [children, setChildren] = useState(0)
   const router = useRouter()
+
+  function goMenu() {
+    if (selected) {
+      router.push('/table/' + String(selected))
+    }
+  }
+
   return (
     <div style={{minHeight:'100vh',background:'#1b4332',display:'flex',flexDirection:'column',alignItems:'center'}}>
       <div style={{padding:'40px 24px',textAlign:'center',color:'white'}}>
@@ -23,26 +30,25 @@ export default function TablePage() {
         </div>
         <div style={{fontWeight:800,color:'#1b4332',marginBottom:12}}>จำนวนคน</div>
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'12px 0',borderBottom:'1px solid #f0f0f0'}}>
-          <span style={{color:"#1b4332"}}>ผู้ใหญ่</span>
+          <span style={{color:'#333'}}>ผู้ใหญ่</span>
           <div style={{display:'flex',alignItems:'center',gap:14}}>
             <button onClick={()=>setAdults(v=>Math.max(1,v-1))} style={{width:34,height:34,borderRadius:'50%',border:'none',background:'#2d6a4f',color:'white',fontSize:20,cursor:'pointer'}}>-</button>
-            <span style={{fontWeight:900,fontSize:22,minWidth:28,textAlign:'center'}}>{adults}</span>
+            <span style={{fontWeight:900,fontSize:22,minWidth:28,textAlign:'center',color:'#333'}}>{adults}</span>
             <button onClick={()=>setAdults(v=>v+1)} style={{width:34,height:34,borderRadius:'50%',border:'none',background:'#2d6a4f',color:'white',fontSize:20,cursor:'pointer'}}>+</button>
           </div>
         </div>
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'12px 0',marginBottom:24}}>
-          <span style={{color:"#1b4332"}}>เด็ก</span>
+          <span style={{color:'#333'}}>เด็ก</span>
           <div style={{display:'flex',alignItems:'center',gap:14}}>
             <button onClick={()=>setChildren(v=>Math.max(0,v-1))} style={{width:34,height:34,borderRadius:'50%',border:'none',background:'#2d6a4f',color:'white',fontSize:20,cursor:'pointer'}}>-</button>
-            <span style={{fontWeight:900,fontSize:22,minWidth:28,textAlign:'center'}}>{children}</span>
+            <span style={{fontWeight:900,fontSize:22,minWidth:28,textAlign:'center',color:'#333'}}>{children}</span>
             <button onClick={()=>setChildren(v=>v+1)} style={{width:34,height:34,borderRadius:'50%',border:'none',background:'#2d6a4f',color:'white',fontSize:20,cursor:'pointer'}}>+</button>
           </div>
         </div>
-        <button onClick={()=>selected&&router.push(\/table/\\)} disabled={!selected} style={{width:'100%',padding:'17px',background:selected?'#2d6a4f':'#e0e0e0',color:selected?'white':'#aaa',border:'none',borderRadius:16,fontWeight:800,fontSize:17,cursor:selected?'pointer':'not-allowed'}}>
-          {selected?'เข้าสู่เมนู โต๊ะ '+selected:'กรุณาเลือกโต๊ะก่อน'}
+        <button onClick={goMenu} disabled={!selected} style={{width:'100%',padding:'17px',background:selected?'#2d6a4f':'#e0e0e0',color:selected?'white':'#aaa',border:'none',borderRadius:16,fontWeight:800,fontSize:17,cursor:selected?'pointer':'not-allowed'}}>
+          {selected ? 'เข้าสู่เมนู โต๊ะ ' + selected : 'กรุณาเลือกโต๊ะก่อน'}
         </button>
       </div>
     </div>
   )
 }
-
