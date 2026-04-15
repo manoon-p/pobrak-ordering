@@ -42,14 +42,19 @@ export default function TableMenuPage({ params }: { params: any }) {
     }
     setLoading(false)
   }
-  if (ordered) return (
-    <div style={{minHeight:'100vh',background:'#f0fdf4',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
-      <div style={{fontSize:64}}>✅</div>
-      <h2 style={{color:'#16a34a'}}>ส่งออเดอร์แล้วครับ!</h2>
-      <p>โต๊ะ {tableId}</p>
-      <button onClick={()=>setOrdered(false)} style={{marginTop:24,padding:'12px 32px',background:'#16a34a',color:'white',border:'none',borderRadius:12,fontSize:16,cursor:'pointer'}}>สั่งเพิ่ม</button>
-    </div>
-  )
+if (ordered) return (
+  <div style={{minHeight:'100vh',background:'#f0fdf4',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:20}}>
+    <div style={{fontSize:64}}>✅</div>
+    <h2 style={{color:'#16a34a',marginTop:16}}>ส่งออเดอร์แล้วครับ!</h2>
+    <p style={{color:'#6b7280'}}>โต๊ะ {tableId} — กรุณารอสักครู่</p>
+    <button onClick={()=>setOrdered(false)} style={{marginTop:16,padding:'12px 32px',background:'#16a34a',color:'white',border:'none',borderRadius:12,fontSize:16,cursor:'pointer',width:'100%',maxWidth:300}}>
+      🍽️ สั่งเพิ่ม
+    </button>
+    <button onClick={()=>window.location.href='/table'} style={{marginTop:10,padding:'12px 32px',background:'white',color:'#6b7280',border:'1px solid #e5e7eb',borderRadius:12,fontSize:16,cursor:'pointer',width:'100%',maxWidth:300}}>
+      ✅ เสร็จแล้ว / ออกจากโต๊ะ
+    </button>
+  </div>
+)
   return (
     <div style={{minHeight:'100vh',background:'#fafafa',paddingBottom:100}}>
       <div style={{background:'#15803d',padding:'16px 20px',display:'flex',justifyContent:'space-between',alignItems:'center',position:'sticky',top:0,zIndex:10}}>
