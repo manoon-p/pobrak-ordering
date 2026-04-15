@@ -24,8 +24,11 @@ export default function StaffDashboard() {
     const unsub = subscribeToActiveOrders((data) => {
       if (data.length > prevCountRef.current) playBeep()
       prevCountRef.current = data.length
-      // เรียงใหม่ก่อนอยู่บน
-      const sorted = [...data].reverse()
+      const sorted = [...data].sort((a, b) => {
+        const ta = a.createdAt?.toMillis?.() ?? 0
+        const tb = b.createdAt?.toMillis?.() ?? 0
+        return tb - ta
+      })
       setOrders(sorted)
     })
     return () => unsub()
@@ -43,32 +46,24 @@ export default function StaffDashboard() {
 
   return (
     <div style={{ minHeight: '100vh', background: '#f3f4f6', fontFamily: 'sans-serif' }}>
-      <div style={{ background: '#15803d', padding: '16px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div style={{ background: '#15803d', padding: '16px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: 0, zIndex: 10 }}>
         <div style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>👨‍🍳 Staff Dashboard</div>
-        <div style={{ color: '#bbf7d0', fontSize: 14 }}>ออเดอร์ทั้งหมด: {orders.length}</div>
+        <div style={{ color: '#bbf7d0', fontSize: 14 }}>ออเดอร์: {orders.length}</div>
       </div>
-
       <div style={{ padding: 16 }}>
-        {orders.length === 0 && (
-          <div style={{ textAlign: 'center', padding: 60, color: '#9ca3af', fontSize: 18 }}>
-            ยังไม่มีออเดอร์
-          </div>
-        )}
-
+        {orders.length === 0 && <div style={{ textAlign: 'center', padding: 60, color: '#9ca3af', fontSize: 18 }}>ยังไม่มีออเดอร์</div>}
         {pendingOrders.length > 0 && (
           <div style={{ marginBottom: 24 }}>
             <h2 style={{ color: '#f59e0b', marginBottom: 12, fontSize: 16 }}>🔔 รอรับออเดอร์ ({pendingOrders.length})</h2>
             {pendingOrders.map(order => <OrderCard key={order.id} order={order} statusLabel={statusLabel} onUpdate={updateOrderStatus} />)}
           </div>
         )}
-
         {confirmedOrders.length > 0 && (
           <div style={{ marginBottom: 24 }}>
             <h2 style={{ color: '#3b82f6', marginBottom: 12, fontSize: 16 }}>🍳 กำลังทำ ({confirmedOrders.length})</h2>
             {confirmedOrders.map(order => <OrderCard key={order.id} order={order} statusLabel={statusLabel} onUpdate={updateOrderStatus} />)}
           </div>
         )}
-
         {servedOrders.length > 0 && (
           <div style={{ marginBottom: 24 }}>
             <h2 style={{ color: '#10b981', marginBottom: 12, fontSize: 16 }}>✅ เสิร์ฟแล้ว ({servedOrders.length})</h2>
@@ -90,17 +85,16 @@ function formatTime(ts: any) {
 
 function OrderCard({ order, statusLabel, onUpdate }: any) {
   const s = statusLabel[order.status] || {}
-  const tableNum = order.tableId || '?'
   return (
     <div style={{ background: 'white', borderRadius: 12, padding: 16, marginBottom: 10, boxShadow: '0 1px 3px rgba(0,0,0,0.08)', borderLeft: `4px solid ${s.color}` }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span style={{ fontWeight: 'bold', fontSize: 20 }}>โต๊ะ {tableNum}</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+          <span style={{ fontWeight: 'bold', fontSize: 20 }}>โต๊ะ {order.tableId || '?'}</span>
           <span style={{ fontSize: 12, background: s.color, color: 'white', padding: '2px 8px', borderRadius: 10 }}>{s.label}</span>
           {order.orderNumber && <span style={{ fontSize: 11, color: '#9ca3af' }}>#{order.orderNumber}</span>}
         </div>
         <div style={{ textAlign: 'right' }}>
-          <div style={{ fontWeight: 'bold', color: '#15803d' }}>฿{order.totalAmount}</div>
+          <div style={{ fontWeight: 'bold', color: '#15803d', fontSize: 16 }}>฿{order.totalAmount}</div>
           <div style={{ fontSize: 11, color: '#9ca3af' }}>{formatTime(order.createdAt)}</div>
         </div>
       </div>
@@ -113,10 +107,7 @@ function OrderCard({ order, statusLabel, onUpdate }: any) {
         ))}
       </div>
       {s.next && (
-        <button
-          onClick={() => onUpdate(order.id, s.next)}
-          style={{ width: '100%', padding: '10px', background: s.color, color: 'white', border: 'none', borderRadius: 8, fontWeight: 'bold', cursor: 'pointer', fontSize: 14 }}
-        >
+        <button onClick={() => onUpdate(order.id, s.next)} style={{ width: '100%', padding: '10px', background: s.color, color: 'white', border: 'none', borderRadius: 8, fontWeight: 'bold', cursor: 'pointer', fontSize: 14 }}>
           {s.nextLabel}
         </button>
       )}
