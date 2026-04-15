@@ -1,4 +1,3 @@
-$code = @'
 'use client'
 import { useState } from 'react'
 import { menuItems, categories } from '@/data/menuData'
@@ -91,5 +90,3 @@ export default function TableMenuPage({ params }: { params: any }) {
     </div>
   )
 }
-'@
-Set-Content "app/table/[tableId]/page.tsx" $code -Encoding UTF8
