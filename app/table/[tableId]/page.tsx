@@ -83,7 +83,7 @@ export default function TableMenuPage() {
             <div key={item.id} style={{background:'white',borderRadius:12,padding:16,marginBottom:10,display:'flex',justifyContent:'space-between',alignItems:'center',boxShadow:'0 1px 3px rgba(0,0,0,0.08)'}}>
               <div><div style={{fontWeight:500,color:'#111827'}}>{item.name}</div><div style={{color:'#15803d',fontWeight:'bold'}}>฿{item.price}</div></div>
               <div style={{display:'flex',alignItems:'center',gap:10}}>
-                {cartItem && <><button onClick={()=>removeFromCart(item.id)} style={{width:32,height:32,borderRadius:'50%',border:'2px solid #15803d',background:'white',color:'#15803d',fontSize:18,cursor:'pointer'}}>−</button><span style={{fontWeight:'bold',minWidth:20,textAlign:'center',color:'#111827',WebkitTextFillColor:'#111827'}}>{cartItem.quantity}</span>
+                {cartItem && <><button onClick={()=>removeFromCart(item.id)} style={{width:32,height:32,borderRadius:'50%',border:'2px solid #15803d',background:'white',color:'#15803d',fontSize:18,cursor:'pointer'}}>−</button><div style={{fontWeight:'bold',minWidth:20,textAlign:'center',color:'#111827',fontSize:16}}>{cartItem.quantity}</div>
                 <button onClick={()=>addToCart(item)} style={{width:32,height:32,borderRadius:'50%',border:'none',background:'#15803d',color:'white',fontSize:18,cursor:'pointer'}}>+</button>
               </div>
             </div>
