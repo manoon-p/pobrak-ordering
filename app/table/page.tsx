@@ -23,7 +23,7 @@ export default function TablePage() {
         </div>
         <div style={{fontWeight:800,color:'#1b4332',marginBottom:12}}>จำนวนคน</div>
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'12px 0',borderBottom:'1px solid #f0f0f0'}}>
-          <span>ผู้ใหญ่</span>
+          <span style={{color:"#1b4332"}}>ผู้ใหญ่</span>
           <div style={{display:'flex',alignItems:'center',gap:14}}>
             <button onClick={()=>setAdults(v=>Math.max(1,v-1))} style={{width:34,height:34,borderRadius:'50%',border:'none',background:'#2d6a4f',color:'white',fontSize:20,cursor:'pointer'}}>-</button>
             <span style={{fontWeight:900,fontSize:22,minWidth:28,textAlign:'center'}}>{adults}</span>
@@ -31,17 +31,18 @@ export default function TablePage() {
           </div>
         </div>
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'12px 0',marginBottom:24}}>
-          <span>เด็ก</span>
+          <span style={{color:"#1b4332"}}>เด็ก</span>
           <div style={{display:'flex',alignItems:'center',gap:14}}>
             <button onClick={()=>setChildren(v=>Math.max(0,v-1))} style={{width:34,height:34,borderRadius:'50%',border:'none',background:'#2d6a4f',color:'white',fontSize:20,cursor:'pointer'}}>-</button>
             <span style={{fontWeight:900,fontSize:22,minWidth:28,textAlign:'center'}}>{children}</span>
             <button onClick={()=>setChildren(v=>v+1)} style={{width:34,height:34,borderRadius:'50%',border:'none',background:'#2d6a4f',color:'white',fontSize:20,cursor:'pointer'}}>+</button>
           </div>
         </div>
-        <button onClick={()=>selected&&router.push('/table/'+selected)} disabled={!selected} style={{width:'100%',padding:'17px',background:selected?'#2d6a4f':'#e0e0e0',color:selected?'white':'#aaa',border:'none',borderRadius:16,fontWeight:800,fontSize:17,cursor:selected?'pointer':'not-allowed'}}>
+        <button onClick={()=>selected&&router.push(\/table/\\)} disabled={!selected} style={{width:'100%',padding:'17px',background:selected?'#2d6a4f':'#e0e0e0',color:selected?'white':'#aaa',border:'none',borderRadius:16,fontWeight:800,fontSize:17,cursor:selected?'pointer':'not-allowed'}}>
           {selected?'เข้าสู่เมนู โต๊ะ '+selected:'กรุณาเลือกโต๊ะก่อน'}
         </button>
       </div>
     </div>
   )
 }
+
