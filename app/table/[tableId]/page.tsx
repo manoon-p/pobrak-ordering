@@ -41,7 +41,7 @@ export default function TableMenuPage() {
     if (cart.length === 0) return
     setLoading(true)
     try {
-      await createOrder({ tableId, items: cart, totalAmount: totalPrice })
+      await createOrder({ tableId, items: cart, totalAmount: totalPrice, adults: Number(adults), children: Number(children) })
       setOrdered(true)
       setCart([])
       setShowCart(false)
