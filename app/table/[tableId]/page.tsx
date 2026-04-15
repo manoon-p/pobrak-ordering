@@ -18,15 +18,12 @@ export default function TableMenuPage({ params }: { params: { tableId: string } 
   const [loading, setLoading] = useState(false)
 
   const tableId = params.tableId
-
   const filteredItems = menuItems.filter(item => item.category === activeCategory)
 
   const addToCart = (item: { id: string; name: string; price: number }) => {
     setCart(prev => {
       const existing = prev.find(c => c.id === item.id)
-      if (existing) {
-        return prev.map(c => c.id === item.id ? { ...c, quantity: c.quantity + 1 } : c)
-      }
+      if (existing) return prev.map(c => c.id === item.id ? { ...c, quantity: c.quantity + 1 } : c)
       return [...prev, { ...item, quantity: 1 }]
     })
   }
@@ -34,9 +31,7 @@ export default function TableMenuPage({ params }: { params: { tableId: string } 
   const removeFromCart = (id: string) => {
     setCart(prev => {
       const existing = prev.find(c => c.id === id)
-      if (existing && existing.quantity > 1) {
-        return prev.map(c => c.id === id ? { ...c, quantity: c.quantity - 1 } : c)
-      }
+      if (existing && existing.quantity > 1) return prev.map(c => c.id === id ? { ...c, quantity: c.quantity - 1 } : c)
       return prev.filter(c => c.id !== id)
     })
   }
@@ -48,7 +43,7 @@ export default function TableMenuPage({ params }: { params: { tableId: string } 
     if (cart.length === 0) return
     setLoading(true)
     try {
-      await addOrder({
+      await createOrder({
         tableId,
         items: cart,
         totalAmount: totalPrice,
@@ -69,10 +64,7 @@ export default function TableMenuPage({ params }: { params: { tableId: string } 
         <div style={{ fontSize: '64px' }}>✅</div>
         <h2 style={{ color: '#16a34a', fontSize: '24px', fontWeight: 'bold', marginTop: '16px' }}>ส่งออเดอร์แล้วครับ!</h2>
         <p style={{ color: '#6b7280', marginTop: '8px' }}>โต๊ะ {tableId} — กรุณารอสักครู่</p>
-        <button
-          onClick={() => setOrdered(false)}
-          style={{ marginTop: '24px', padding: '12px 32px', background: '#16a34a', color: 'white', border: 'none', borderRadius: '12px', fontSize: '16px', cursor: 'pointer' }}
-        >
+        <button onClick={() => setOrdered(false)} style={{ marginTop: '24px', padding: '12px 32px', background: '#16a34a', color: 'white', border: 'none', borderRadius: '12px', fontSize: '16px', cursor: 'pointer' }}>
           สั่งเพิ่ม
         </button>
       </div>
@@ -81,16 +73,12 @@ export default function TableMenuPage({ params }: { params: { tableId: string } 
 
   return (
     <div style={{ minHeight: '100vh', background: '#fafafa', paddingBottom: '100px' }}>
-      {/* Header */}
       <div style={{ background: '#15803d', padding: '16px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: 0, zIndex: 10 }}>
         <div>
           <div style={{ color: 'white', fontSize: '18px', fontWeight: 'bold' }}>พบรัก ณ บางน้ำผึ้ง</div>
           <div style={{ color: '#bbf7d0', fontSize: '13px' }}>โต๊ะ {tableId}</div>
         </div>
-        <button
-          onClick={() => setShowCart(!showCart)}
-          style={{ position: 'relative', background: 'white', border: 'none', borderRadius: '12px', padding: '8px 16px', cursor: 'pointer', fontWeight: 'bold', color: '#15803d', fontSize: '14px' }}
-        >
+        <button onClick={() => setShowCart(!showCart)} style={{ position: 'relative', background: 'white', border: 'none', borderRadius: '12px', padding: '8px 16px', cursor: 'pointer', fontWeight: 'bold', color: '#15803d', fontSize: '14px' }}>
           🛒 ตะกร้า
           {totalItems > 0 && (
             <span style={{ position: 'absolute', top: '-8px', right: '-8px', background: '#ef4444', color: 'white', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 'bold' }}>
@@ -100,24 +88,14 @@ export default function TableMenuPage({ params }: { params: { tableId: string } 
         </button>
       </div>
 
-      {/* Category Tabs */}
       <div style={{ display: 'flex', overflowX: 'auto', padding: '12px 16px', gap: '8px', background: 'white', borderBottom: '1px solid #e5e7eb' }}>
         {categories.map(cat => (
-          <button
-            key={cat}
-            onClick={() => setActiveCategory(cat)}
-            style={{
-              whiteSpace: 'nowrap', padding: '8px 16px', borderRadius: '20px', border: 'none', cursor: 'pointer', fontSize: '13px', fontWeight: '500',
-              background: activeCategory === cat ? '#15803d' : '#f3f4f6',
-              color: activeCategory === cat ? 'white' : '#374151',
-            }}
-          >
+          <button key={cat} onClick={() => setActiveCategory(cat)} style={{ whiteSpace: 'nowrap', padding: '8px 16px', borderRadius: '20px', border: 'none', cursor: 'pointer', fontSize: '13px', fontWeight: '500', background: activeCategory === cat ? '#15803d' : '#f3f4f6', color: activeCategory === cat ? 'white' : '#374151' }}>
             {cat}
           </button>
         ))}
       </div>
 
-      {/* Menu Items */}
       <div style={{ padding: '16px' }}>
         <h3 style={{ color: '#15803d', fontWeight: 'bold', marginBottom: '12px', fontSize: '16px' }}>{activeCategory}</h3>
         {filteredItems.map(item => {
@@ -129,12 +107,12 @@ export default function TableMenuPage({ params }: { params: { tableId: string } 
                 <div style={{ color: '#15803d', fontWeight: 'bold', marginTop: '4px' }}>฿{item.price}</div>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                {cartItem ? (
+                {cartItem && (
                   <>
                     <button onClick={() => removeFromCart(item.id)} style={{ width: '32px', height: '32px', borderRadius: '50%', border: '2px solid #15803d', background: 'white', color: '#15803d', fontSize: '18px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>−</button>
                     <span style={{ fontWeight: 'bold', minWidth: '20px', textAlign: 'center' }}>{cartItem.quantity}</span>
                   </>
-                ) : null}
+                )}
                 <button onClick={() => addToCart(item)} style={{ width: '32px', height: '32px', borderRadius: '50%', border: 'none', background: '#15803d', color: 'white', fontSize: '18px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>+</button>
               </div>
             </div>
@@ -142,7 +120,6 @@ export default function TableMenuPage({ params }: { params: { tableId: string } 
         })}
       </div>
 
-      {/* Cart Drawer */}
       {showCart && (
         <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, background: 'white', borderRadius: '20px 20px 0 0', padding: '20px', boxShadow: '0 -4px 20px rgba(0,0,0,0.15)', zIndex: 50, maxHeight: '70vh', overflowY: 'auto' }}>
           <h3 style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '16px' }}>🛒 รายการที่เลือก</h3>
@@ -160,11 +137,7 @@ export default function TableMenuPage({ params }: { params: { tableId: string } 
                 <span>รวมทั้งหมด</span>
                 <span style={{ color: '#15803d' }}>฿{totalPrice}</span>
               </div>
-              <button
-                onClick={submitOrder}
-                disabled={loading}
-                style={{ width: '100%', padding: '16px', background: loading ? '#9ca3af' : '#15803d', color: 'white', border: 'none', borderRadius: '12px', fontSize: '16px', fontWeight: 'bold', cursor: loading ? 'not-allowed' : 'pointer' }}
-              >
+              <button onClick={submitOrder} disabled={loading} style={{ width: '100%', padding: '16px', background: loading ? '#9ca3af' : '#15803d', color: 'white', border: 'none', borderRadius: '12px', fontSize: '16px', fontWeight: 'bold', cursor: loading ? 'not-allowed' : 'pointer' }}>
                 {loading ? 'กำลังส่ง...' : '✅ ส่งออเดอร์'}
               </button>
             </>
