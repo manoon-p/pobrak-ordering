@@ -85,9 +85,11 @@ function formatTime(ts: any) {
 
 function OrderCard({ order, statusLabel, onUpdate }: any) {
   const s = statusLabel[order.status] || {}
+  const adults = order.adults ?? 0
+  const children = order.children ?? 0
   return (
     <div style={{ background: 'white', borderRadius: 12, padding: 16, marginBottom: 10, boxShadow: '0 1px 3px rgba(0,0,0,0.08)', borderLeft: `4px solid ${s.color}` }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
           <span style={{ fontWeight: 'bold', fontSize: 20 }}>โต๊ะ {order.tableId || '?'}</span>
           <span style={{ fontSize: 12, background: s.color, color: 'white', padding: '2px 8px', borderRadius: 10 }}>{s.label}</span>
@@ -97,6 +99,9 @@ function OrderCard({ order, statusLabel, onUpdate }: any) {
           <div style={{ fontWeight: 'bold', color: '#15803d', fontSize: 16 }}>฿{order.totalAmount}</div>
           <div style={{ fontSize: 11, color: '#9ca3af' }}>{formatTime(order.createdAt)}</div>
         </div>
+      </div>
+      <div style={{ fontSize: 12, color: '#6b7280', marginBottom: 10 }}>
+        👤 ผู้ใหญ่ {adults} คน {children > 0 ? `| 👶 เด็ก ${children} คน` : ''}
       </div>
       <div style={{ marginBottom: 10 }}>
         {(order.items || []).map((item: any, i: number) => (

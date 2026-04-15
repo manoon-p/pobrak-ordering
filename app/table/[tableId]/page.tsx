@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react'
-import { useParams } from 'next/navigation'
+import { useParams, useSearchParams } from 'next/navigation'
 import { menuItems, categories } from '@/data/menuData'
 import { createOrder } from '@/lib/firestore/orders'
 
@@ -15,7 +15,9 @@ export default function TableMenuPage() {
   const [ordered, setOrdered] = useState(false)
   const [loading, setLoading] = useState(false)
   const filteredItems = menuItems.filter(item => item.category === activeCategory)
-
+  const searchParams = useSearchParams()
+  const adults = searchParams.get('adults') ?? '0'
+  const children = searchParams.get('children') ?? '0'
   function addToCart(item: { id: string; name: string; price: number }) {
     setCart(prev => {
       const existing = prev.find(c => c.id === item.id)

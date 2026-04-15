@@ -8,11 +8,11 @@ export default function TablePage() {
   const [children, setChildren] = useState(0)
   const router = useRouter()
 
-  function goMenu() {
-    if (selected) {
-      router.push('/table/' + String(selected))
-    }
+function goMenu() {
+  if (selected) {
+    router.push('/table/' + String(selected) + '?adults=' + adults + '&children=' + children)
   }
+}
 
   return (
     <div style={{minHeight:'100vh',background:'#1b4332',display:'flex',flexDirection:'column',alignItems:'center'}}>
