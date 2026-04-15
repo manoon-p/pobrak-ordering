@@ -56,9 +56,10 @@ await createOrder({
       setOrdered(true)
       setCart([])
       setShowCart(false)
-    } catch (e) {
-      alert('เกิดข้อผิดพลาด กรุณาลองใหม่')
-    }
+} catch (e: any) {
+  console.error('Firebase error:', e)
+  alert('Error: ' + e.message)
+}
     setLoading(false)
   }
 
