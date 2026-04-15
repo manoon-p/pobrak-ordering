@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 export default function TablePage() {
-  const [selected, setSelected] = useState(null)
+  const [selected, setSelected] = useState<number|null>(null)
   const [adults, setAdults] = useState(2)
   const [children, setChildren] = useState(0)
   const router = useRouter()
