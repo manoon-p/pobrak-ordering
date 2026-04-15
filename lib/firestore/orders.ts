@@ -16,7 +16,17 @@ async function generateOrderNumber() {
 
 export async function createOrder(data: any) {
   const { orderNumber, dailySeq, date } = await generateOrderNumber()
-  const ref = await addDoc(collection(db,'orders'), { ...data, orderNumber, dailySeq, date, status:'pending', createdAt: serverTimestamp() })
+  const cleanData = Object.fromEntries(
+    Object.entries(data).filter(([_, v]) => v !== undefined)
+  )
+  const ref = await addDoc(collection(db,'orders'), { 
+    ...cleanData, 
+    orderNumber, 
+    dailySeq, 
+    date, 
+    status: 'pending', 
+    createdAt: serverTimestamp() 
+  })
   return { id: ref.id, orderNumber }
 }
 
