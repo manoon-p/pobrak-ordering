@@ -1,21 +1,21 @@
 import { collection, addDoc, updateDoc, doc, serverTimestamp, query, where, onSnapshot } from 'firebase/firestore'
 import { db } from '@/lib/firebase'
 
-export async function createCancelRequest(tableId, items) {
+export async function createCancelRequest(tableId: string, items: any[]) {
   const ref = await addDoc(collection(db,'cancel_requests'), { tableId, items, status:'pending', createdAt:serverTimestamp() })
   return ref.id
 }
 
-export async function updateCancelRequest(requestId, status) {
+export async function updateCancelRequest(requestId: string, status: string) {
   await updateDoc(doc(db,'cancel_requests',requestId), { status, resolvedAt:serverTimestamp() })
 }
 
-export function subscribeToCancelRequests(callback) {
+export function subscribeToCancelRequests(callback: (data: any[]) => void) {
   const q = query(collection(db,'cancel_requests'), where('status','==','pending'))
   return onSnapshot(q, snap => callback(snap.docs.map(d=>({id:d.id,...d.data()}))))
 }
 
-export function subscribeToTableCancelRequest(tableId, callback) {
+export function subscribeToTableCancelRequest(tableId: string, callback: (data: any) => void) {
   const q = query(collection(db,'cancel_requests'), where('tableId','==',tableId), where('status','in',['pending','approved','rejected']))
   return onSnapshot(q, snap => callback(snap.empty ? null : {id:snap.docs[0].id,...snap.docs[0].data()}))
 }
