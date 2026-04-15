@@ -5,8 +5,11 @@ import { createOrder } from '@/lib/firestore/orders'
 
 type CartItem = { id: string; name: string; price: number; quantity: number }
 
-export default function TableMenuPage({ params }: { params: any }) {
-  const tableId = params.tableId as string
+import { useParams } from 'next/navigation'
+
+export default function TableMenuPage() {
+  const params = useParams()
+  const tableId = String(params?.tableId ?? '')
   const [activeCategory, setActiveCategory] = useState(categories[0])
   const [cart, setCart] = useState<CartItem[]>([])
   const [showCart, setShowCart] = useState(false)
