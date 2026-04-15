@@ -10,14 +10,15 @@ type CartItem = {
   quantity: number
 }
 
-export default function TableMenuPage({ params }: { params: { tableId: string } }) {
+export default function TableMenuPage({ params }: { params: any }) {
+  const tableId = String(params?.tableId ?? '')
   const [activeCategory, setActiveCategory] = useState(categories[0])
   const [cart, setCart] = useState<CartItem[]>([])
   const [showCart, setShowCart] = useState(false)
   const [ordered, setOrdered] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const tableId = params.tableId
+  const tableId = params?.tableId ?? 'unknown'
   const filteredItems = menuItems.filter(item => item.category === activeCategory)
 
   const addToCart = (item: { id: string; name: string; price: number }) => {
