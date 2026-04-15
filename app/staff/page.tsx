@@ -5,7 +5,6 @@ import { subscribeToActiveOrders, updateOrderStatus } from '@/lib/firestore/orde
 export default function StaffDashboard() {
   const [orders, setOrders] = useState<any[]>([])
   const prevCountRef = useRef(0)
-  const audioRef = useRef<AudioContext | null>(null)
 
   const playBeep = () => {
     try {
@@ -25,7 +24,9 @@ export default function StaffDashboard() {
     const unsub = subscribeToActiveOrders((data) => {
       if (data.length > prevCountRef.current) playBeep()
       prevCountRef.current = data.length
-      setOrders(data)
+      // เรียงใหม่ก่อนอยู่บน
+      const sorted = [...data].reverse()
+      setOrders(sorted)
     })
     return () => unsub()
   }, [])
@@ -79,16 +80,29 @@ export default function StaffDashboard() {
   )
 }
 
+function formatTime(ts: any) {
+  if (!ts) return ''
+  try {
+    const date = ts.toDate ? ts.toDate() : new Date(ts)
+    return date.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })
+  } catch { return '' }
+}
+
 function OrderCard({ order, statusLabel, onUpdate }: any) {
   const s = statusLabel[order.status] || {}
+  const tableNum = order.tableId || '?'
   return (
     <div style={{ background: 'white', borderRadius: 12, padding: 16, marginBottom: 10, boxShadow: '0 1px 3px rgba(0,0,0,0.08)', borderLeft: `4px solid ${s.color}` }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-        <div>
-          <span style={{ fontWeight: 'bold', fontSize: 18 }}>โต๊ะ {order.tableId}</span>
-          <span style={{ marginLeft: 10, fontSize: 12, background: s.color, color: 'white', padding: '2px 8px', borderRadius: 10 }}>{s.label}</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span style={{ fontWeight: 'bold', fontSize: 20 }}>โต๊ะ {tableNum}</span>
+          <span style={{ fontSize: 12, background: s.color, color: 'white', padding: '2px 8px', borderRadius: 10 }}>{s.label}</span>
+          {order.orderNumber && <span style={{ fontSize: 11, color: '#9ca3af' }}>#{order.orderNumber}</span>}
         </div>
-        <div style={{ fontWeight: 'bold', color: '#15803d' }}>฿{order.totalAmount}</div>
+        <div style={{ textAlign: 'right' }}>
+          <div style={{ fontWeight: 'bold', color: '#15803d' }}>฿{order.totalAmount}</div>
+          <div style={{ fontSize: 11, color: '#9ca3af' }}>{formatTime(order.createdAt)}</div>
+        </div>
       </div>
       <div style={{ marginBottom: 10 }}>
         {(order.items || []).map((item: any, i: number) => (
